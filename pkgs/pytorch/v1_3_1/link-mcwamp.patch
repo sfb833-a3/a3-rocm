@@ -1,0 +1,38 @@
+diff --git a/c10/hip/CMakeLists.txt b/c10/hip/CMakeLists.txt
+index 328d21470..7eb0a51b6 100644
+--- a/c10/hip/CMakeLists.txt
++++ b/c10/hip/CMakeLists.txt
+@@ -44,7 +44,7 @@ endif()
+ # ---[ Dependency of c10_hip
+ target_link_libraries(c10_hip PUBLIC c10)
+ 
+-target_link_libraries(c10_hip PUBLIC ${PYTORCH_HIP_HCC_LIBRARIES})
++target_link_libraries(c10_hip PUBLIC ${PYTORCH_HIP_HCC_LIBRARIES} @mcwamp@)
+ 
+ target_include_directories(
+     c10_hip PUBLIC
+diff --git a/caffe2/CMakeLists.txt b/caffe2/CMakeLists.txt
+index 032902e78..e49cb898f 100644
+--- a/caffe2/CMakeLists.txt
++++ b/caffe2/CMakeLists.txt
+@@ -542,7 +542,7 @@ if (NOT INTERN_BUILD_MOBILE OR NOT BUILD_CAFFE2_MOBILE)
+     # caffe2_nvrtc's stubs to driver APIs are useful for HIP.
+     # See NOTE [ ATen NVRTC Stub and HIP ]
+     add_library(caffe2_nvrtc SHARED ${ATen_NVRTC_STUB_SRCS})
+-    target_link_libraries(caffe2_nvrtc ${CUDA_NVRTC} ${PYTORCH_HIP_HCC_LIBRARIES} ${ROCM_HIPRTC_LIB})
++    target_link_libraries(caffe2_nvrtc ${CUDA_NVRTC} ${PYTORCH_HIP_HCC_LIBRARIES} ${ROCM_HIPRTC_LIB} @mcwamp@)
+     target_link_libraries(caffe2_nvrtc ${CUDA_NVRTC} ${CUDA_CUDA_LIB} ${CUDA_NVRTC_LIB})
+     target_include_directories(caffe2_nvrtc PRIVATE ${CUDA_INCLUDE_DIRS})
+     target_compile_definitions(caffe2_nvrtc PRIVATE USE_ROCM __HIP_PLATFORM_HCC__)
+diff --git a/test/cpp/jit/CMakeLists.txt b/test/cpp/jit/CMakeLists.txt
+index 2bb1945a5..faa998292 100644
+--- a/test/cpp/jit/CMakeLists.txt
++++ b/test/cpp/jit/CMakeLists.txt
+@@ -23,6 +23,7 @@ elseif (USE_ROCM)
+   target_link_libraries(test_jit PRIVATE
+     ${ROCM_HIPRTC_LIB}
+     ${PYTORCH_HIP_HCC_LIBRARIES}
++    @mcwamp@
+     ${TORCH_CUDA_LIBRARIES})
+ 
+   target_link_libraries(test_jit PRIVATE caffe2_gpu)

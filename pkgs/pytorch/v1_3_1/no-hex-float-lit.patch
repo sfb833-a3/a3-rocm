@@ -1,0 +1,13 @@
+diff --git a/aten/src/ATen/native/QuantizedLinear.cpp b/aten/src/ATen/native/QuantizedLinear.cpp
+index 288a49f32..46ff7c5de 100644
+--- a/aten/src/ATen/native/QuantizedLinear.cpp
++++ b/aten/src/ATen/native/QuantizedLinear.cpp
+@@ -292,7 +292,7 @@ float raw_uint16_to_fp16(unsigned short value) {
+   unsigned short significand_bits = value & 0x3ff;
+ 
+   float sign = sign_bits ? -1 : 1;
+-  float significand = 1 + significand_bits * 0x1p-10;
++  float significand = 1 + significand_bits * 0.000976562;
+   float exponent = exponent_bits - 0xf;
+ 
+   return sign * std::ldexp(significand, exponent);
