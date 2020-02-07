@@ -15,6 +15,9 @@ in with nixpkgs; {
     inherit rocm;
   };
 
+  # Pass through unmodified.
+  inherit (rocm) tensorflow2-rocm;
+
   tensorflow-rocm = python37Packages.callPackage pkgs/tensorflow/bin.nix {
 	  inherit (rocm) hcc hcc-unwrapped hip miopen-hip miopengemm rocrand
 	    rocfft rocblas rocr rccl cxlactivitylogger;
