@@ -5,7 +5,7 @@
 , hcc
 , roctracer }:
 buildPythonPackage rec {
-  version = "1.0.0";
+  version = "1.3.1";
   pname = "pytorch";
 
   src = fetchFromGitHub {
