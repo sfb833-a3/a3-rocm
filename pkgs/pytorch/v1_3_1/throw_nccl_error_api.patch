@@ -6,7 +6,7 @@ diff --exclude '*~' -ruN A/torch/csrc/cuda/nccl.h B/torch/csrc/cuda/nccl.h
  namespace detail {
  
 -void throw_nccl_error(ncclResult_t status);
-+TORCH_CUDA_API void throw_nccl_error(ncclResult_t status);
++TORCH_API void throw_nccl_error(ncclResult_t status);
  
  static inline void NCCL_CHECK(ncclResult_t status) {
    if (status != ncclSuccess) {

@@ -65,6 +65,7 @@ buildPythonPackage rec {
     "-DUSE_OPENCV=ON"
     "-DUSE_DISTRIBUTED=OFF"
     "-DBUILD_TEST=ON"
+    "-DUSE_NCCL=ON"
   ];
 
   doCheck = false;
@@ -78,7 +79,7 @@ buildPythonPackage rec {
     ./link-mcwamp.patch
     ./add-jit-srcs.patch
     ./hip-cmake.patch
-    #./throw_nccl_error_api.patch
+    ./throw_nccl_error_api.patch
   ];
 
   postConfigure = ''

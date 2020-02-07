@@ -65,6 +65,7 @@ buildPythonPackage rec {
     "-DUSE_OPENCV=ON"
     "-DUSE_DISTRIBUTED=OFF"
     "-DBUILD_TEST=ON"
+    "-DUSE_NCCL=ON"
   ];
 
   doCheck = false;
@@ -77,7 +78,7 @@ buildPythonPackage rec {
     ./link-mcwamp.patch
     ./add-jit-srcs.patch
     ./hip-cmake.patch
-    #./throw_nccl_error_api.patch
+    ./throw_nccl_error_api.patch
     (fetchpatch {
       name = "field-accessors.patch";
       url = "https://github.com/pytorch/pytorch/commit/3a7ecd32eb7418e18146fe09dc9301076b5f0f17.patch";
