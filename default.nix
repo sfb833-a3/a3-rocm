@@ -1,6 +1,9 @@
+{
+  nixpkgs ? import (import ./nix/sources.nix).nixpkgs {}
+}:
+
 let
   sources = import ./nix/sources.nix;
-  nixpkgs = import sources.nixpkgs {};
   rocm = let
     self = (import sources.nixos-rocm) (nixpkgs // self) nixpkgs;
     in self;
