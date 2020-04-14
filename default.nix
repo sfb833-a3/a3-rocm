@@ -1,13 +1,11 @@
 {
-  nixpkgs ? import (import ./nix/sources.nix).nixpkgs {}
+  nixpkgs ? import <nixpkgs> {}
 }:
 
 let
   sources = import ./nix/sources.nix;
-  rocm = let
-    self = (import sources.nixos-rocm) (nixpkgs // self) nixpkgs;
-  in self // {
-    hip = self.hip.overrideAttrs (attrs: rec {
+  rocm = nixpkgs.lib.composeExtensions (import sources.nixos-rocm) (self: super: {
+    hip = super.hip.overrideAttrs (attrs: rec {
       patches = attrs.patches or [] ++ [
         # Fixes race condition in hipEventRecord, remove with ROCM 3.0.
         # https://github.com/ROCm-Developer-Tools/HIP/pull/1620
@@ -18,7 +16,14 @@ let
         })
       ];
     });
-  };
+
+    rocblas-tensile = super.rocblas-tensile.overrideAttrs (attrs: with nixpkgs; rec {
+      postPatch = attrs.postPatch +
+        lib.optionalString (stdenv.cc.isGNU && lib.versionAtLeast stdenv.cc.version "9.2") ''
+          sed 's|const Items empty;|const Items empty = {};|' -i Tensile/Source/lib/include/Tensile/EmbeddedData.hpp
+        '';
+    });
+  }) (rocm // nixpkgs) nixpkgs;
 in with nixpkgs; {
   libtensorflow = callPackage pkgs/libtensorflow {
     inherit (rocm) hcc hcc-unwrapped hip miopen-hip miopengemm
